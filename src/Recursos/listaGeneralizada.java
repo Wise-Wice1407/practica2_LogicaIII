@@ -1,5 +1,6 @@
 package Recursos;
 
+import java.util.List;
 import java.util.Stack;
 
 public class listaGeneralizada {
@@ -31,10 +32,10 @@ public class listaGeneralizada {
     
     //Metodos principales.
     
-    //Contriur una lista generaizada a partir de un cadena de caracteres 
+    //Contruir una lista generaizada a partir de un cadena de caracteres-
     // configurada asi: {(dato,dato,(dato,dato),dato)}.
     public void contruyeLista(String s){
-        //<editor-fold defaultstate="collapsed" desc="Algoritmo para contruir una listaGenralizada">
+        //<editor-fold defaultstate="collapsed" desc="Algoritmo para contruir una listaGenralizada.">
         primero = new nodoLG();
         ultimo = primero;
         int n = s.length();
@@ -67,7 +68,7 @@ public class listaGeneralizada {
     
     //Construye una cadena de caracteres a partir de una lista generalizada.
     public String muestraLista(nodoLG p, String s){
-        //<editor-fold defaultstate="collapsed" desc="Algoritmo recursivo para mostrar los datos en la listaGeneralizada">
+        //<editor-fold defaultstate="collapsed" desc="Algoritmo recursivo para mostrar los datos en la listaGeneralizada.">
         if (s.length() == 0) {
             s.concat("(");
         }
@@ -95,7 +96,7 @@ public class listaGeneralizada {
     }    
     
     public int alturaDelArbol(){
-        //<editor-fold defaultstate="collapsed" desc="Algoritmo recursivo para mostrar altura del arbol">
+        //<editor-fold defaultstate="collapsed" desc="Algoritmo recursivo para mostrar altura del arbol.">
         int h = 0, s;
         Stack pila = new Stack();
         if(primero != null){
@@ -107,7 +108,6 @@ public class listaGeneralizada {
                     s = s++;                        
                     pila.push(siguiente);
                     siguiente = (nodoLG)siguiente.retornaDato();
-                    break;
                 }
                 siguiente = siguiente.retornaLiga();
                 while(siguiente == null && !pila.isEmpty()){
@@ -124,5 +124,87 @@ public class listaGeneralizada {
         //</editor-fold>
     }
     
+    public int gradoDelArbol(){
+        //<editor-fold defaultstate="collapsed" desc="Algoritmo no recursivo para determinar el grado del arbol.">
+        int g = 0, s = g;
+        Stack pila = new Stack(), pilaSuma = new Stack();
+        if(primero != null){
+            nodoLG siguiente = primero.retornaLiga();
+            while(siguiente != null){
+                if(siguiente.retornaSW() == 1){
+                    s = s++;                        
+                    pilaSuma.push(s);
+                    pila.push(siguiente);
+                    s = 0;
+                    siguiente = (nodoLG)siguiente.retornaDato();
+                }
+                else{
+                    s = s++;             
+                    siguiente = siguiente.retornaLiga();
+                }
+                while(siguiente == null && !pila.isEmpty()){
+                    siguiente = (nodoLG)pila.pop();
+                    siguiente = siguiente.retornaLiga();
+                    if(s > g){
+                        g = s;                            
+                    }
+                    s = (int)pilaSuma.pop();
+                }
+                if(s > g){
+                    g = s;                            
+                }
+            }
+        }
+        return g;
+        //</editor-fold>
+    }
     
+    public int hojasDelArbol(){
+        //<editor-fold  defaultstate="collapsed" desc="Algoritmo no recursivo para determinar el total de hojas en el arbol.">
+        int h = 0;
+        Stack pila = new Stack(), pilaSuma = new Stack();
+        if(primero != null){
+            nodoLG siguiente = primero.retornaLiga();
+            while(siguiente != null){
+                if(siguiente.retornaSW() == 1){
+                    pila.push(siguiente);
+                    siguiente = (nodoLG)siguiente.retornaDato();                    
+                }
+                else{
+                    h = h++;             
+                    siguiente = siguiente.retornaLiga();
+                }
+                while(siguiente == null && !pila.isEmpty()){
+                    siguiente = (nodoLG)pila.pop();
+                    siguiente = siguiente.retornaLiga();
+                }
+            }
+        }
+        return h;
+        //</editor-fold>
+    }
+
+    public int gradoDelRegistro(String d){
+        //<editor-fold  defaultstate="collapsed" desc="">
+        int g = 0;
+
+        return g;
+        //</editor-fold>
+    }
+
+    public int nivelDelRegistro(String d){
+        //<editor-fold  defaultstate="collapsed" desc="">
+        int n = 0;
+
+        return n;
+        //</editor-fold>
+    }
+
+    public List<String> ancestrosDelRegistro(String d){
+        //<editor-fold  defaultstate="collapsed" desc="">
+        List<String> anc = null;
+
+        return anc;
+        //</editor-fold>
+    }
 }
