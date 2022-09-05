@@ -217,6 +217,7 @@ public class listaGeneralizada {
         //</editor-fold>
     }
 
+    //Retorna cero si el registro no pertenece al árbol.
     public int nivelDelRegistro(String d){
         //<editor-fold  defaultstate="collapsed" desc="Algoritmo no recursivo para determinar el nivel en el cual se encuentra un dato.">
         int n = 0, s;
@@ -250,17 +251,45 @@ public class listaGeneralizada {
         //</editor-fold>
     }
 
+    //Retorna una lista de caracteres nula si el elemento no pertenece al árbol.
     public List<String> ancestrosDelRegistro(String d){
-        //<editor-fold  defaultstate="collapsed" desc="">
+        //<editor-fold  defaultstate="collapsed" desc="Algoritmo no recursivo para determinar los ancestros de un registro.">
+        Stack pila = new Stack();
         List<String> anc = null;
+        nodoLG anterior;
+        boolean existe = false;
         if(primero != null){
-            anc.add((String)primero.retornaDato());
+            pila.push(primero.retornaDato());
             nodoLG siguiente = primero.retornaLiga();
             while(siguiente != null){
                 if(siguiente.retornaSW() == 1){
+                    pila.push(siguiente);
                     siguiente = (nodoLG)siguiente.retornaDato();
                 }else{
+                    pila.push(siguiente);
+                    if(siguiente.retornaDato() == d){
+                        existe = true;
+                        break;
+                    }
                     siguiente = siguiente.retornaLiga();
+                }
+                if (siguiente == null && !pila.isEmpty()){
+                    siguiente = (nodoLG) pila.pop();
+                    while(siguiente.retornaSW() != 1){
+                        siguiente = (nodoLG) pila.pop();
+                    }
+                    siguiente = siguiente.retornaLiga();
+                }
+            }
+            if(existe){
+                int n = pila.size();
+                for (int i=n; i>0; i--){
+                    if(pila.isEmpty()){
+                        break;
+                    }
+                    nodoLG dato = (nodoLG) pila.elementAt(i);
+                    pila.remove(i);
+                    anc.add((String)dato.retornaDato());
                 }
             }
         }
