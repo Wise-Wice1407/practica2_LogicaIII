@@ -185,17 +185,67 @@ public class listaGeneralizada {
     }
 
     public int gradoDelRegistro(String d){
-        //<editor-fold  defaultstate="collapsed" desc="">
+        //<editor-fold  defaultstate="collapsed" desc="Algoritmo no recursivo para conocer el registro de un dato.">
         int g = 0;
-
+        if(primero == null){
+            return (Integer)null;
+        }
+        nodoLG siguiente = primero.retornaLiga();
+        while(siguiente != null) {
+            if (siguiente.retornaSW() == 1) {
+                nodoLG dato = (nodoLG) siguiente.retornaDato();
+                if(dato.retornaDato() == d){
+                    siguiente = dato.retornaLiga();
+                    if(siguiente == null){
+                        return g;
+                    }else{
+                        while (siguiente != null){
+                            g = g++;
+                            siguiente = siguiente.retornaLiga();
+                        }
+                        return g;
+                    }
+                }
+            }else{
+                if(siguiente.retornaDato() == d){
+                    break;
+                }
+                siguiente = siguiente.retornaLiga();
+            }
+        }
         return g;
         //</editor-fold>
     }
 
     public int nivelDelRegistro(String d){
-        //<editor-fold  defaultstate="collapsed" desc="">
-        int n = 0;
-
+        //<editor-fold  defaultstate="collapsed" desc="Algoritmo no recursivo para determinar el nivel en el cual se encuentra un dato.">
+        int n = 0, s;
+        Stack pila = new Stack();
+        if(primero != null){
+            n = n++;
+            s = n;
+            nodoLG siguiente = primero.retornaLiga();
+            while(siguiente != null){
+                if(siguiente.retornaSW() == 1){
+                    s = s++;
+                    pila.push(siguiente);
+                    siguiente = (nodoLG)siguiente.retornaDato();
+                }else{
+                    if(siguiente.retornaDato() == d){
+                        return n;
+                    }
+                    siguiente = siguiente.retornaLiga();
+                }
+                while(siguiente == null && !pila.isEmpty()){
+                    siguiente = (nodoLG)pila.pop();
+                    siguiente = siguiente.retornaLiga();
+                    if(s > n){
+                        n = s;
+                    }
+                    s = s--;
+                }
+            }
+        }
         return n;
         //</editor-fold>
     }
@@ -203,7 +253,17 @@ public class listaGeneralizada {
     public List<String> ancestrosDelRegistro(String d){
         //<editor-fold  defaultstate="collapsed" desc="">
         List<String> anc = null;
-
+        if(primero != null){
+            anc.add((String)primero.retornaDato());
+            nodoLG siguiente = primero.retornaLiga();
+            while(siguiente != null){
+                if(siguiente.retornaSW() == 1){
+                    siguiente = (nodoLG)siguiente.retornaDato();
+                }else{
+                    siguiente = siguiente.retornaLiga();
+                }
+            }
+        }
         return anc;
         //</editor-fold>
     }
